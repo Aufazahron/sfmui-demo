@@ -71,7 +71,7 @@ const PoweredByFooter: React.FC = () => {
           padding: '10px 32px 12px',
           background: '#ffffff',
           borderTop: '1px solid rgba(0,104,122,0.12)',
-          boxShadow: '0 -2px 16px rgba(30,41,59,0.06), 0 -1px 4px rgba(30,41,59,0.04)',
+
           flexWrap: 'nowrap',
           position: 'relative',
           zIndex: 0,
