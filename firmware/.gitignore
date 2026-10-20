@@ -1,0 +1,8 @@
+secrets.h
+.vscode/
+.idea/
+build/
+*.elf
+*.map
+*.bin
+!secrets.example.h

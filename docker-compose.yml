@@ -1,0 +1,51 @@
+# Coolify: do not bind host ports 80/443 (proxy already owns them).
+# Assign the public domain to the `web` service, container port 80.
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sfm
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sfm}
+      POSTGRES_DB: sfm
+    expose:
+      - "5432"
+    volumes:
+      - sfm_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sfm -d sfm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://sfm:${POSTGRES_PASSWORD:-sfm}@postgres:5432/sfm?schema=public
+      API_PORT: 3001
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change-me-access-secret}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh-secret}
+      MQTT_HOST: ${MQTT_HOST:-emqx.dtek.co.id}
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      MQTT_USERNAME: ${MQTT_USERNAME:-pertamina-sfm}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:-}
+      MQTT_TOPIC_PREFIX: ${MQTT_TOPIC_PREFIX:-pertamina/sfm}
+      MQTT_WSS_URL: ${MQTT_WSS_URL:-wss://mqtt.dtek.co.id}
+    expose:
+      - "3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build: ./frontend
+    restart: unless-stopped
+    expose:
+      - "80"
+    depends_on:
+      - api
+
+volumes:
+  sfm_pgdata:

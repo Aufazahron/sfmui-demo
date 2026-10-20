@@ -1,0 +1,325 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+@custom-variant dark (&:is(.dark *));
+
+/* ── SFM Design System Tokens ───────────────────────────── */
+:root {
+  /* Surface */
+  --sfm-surface:            #f8f9ff;
+  --sfm-surface-low:        #eef4ff;
+  --sfm-surface-container:  #e5efff;
+  --sfm-surface-high:       #dbe9ff;
+  --sfm-surface-white:      #ffffff;
+  --sfm-surface-variant:    #d4e4fa;
+
+  /* On-Surface */
+  --sfm-on-surface:         #0d1c2d;
+  --sfm-on-surface-variant: #45474c;
+  --sfm-outline:            #75777d;
+  --sfm-outline-variant:    #c5c6cd;
+
+  /* Primary (sidebar / deep navy) */
+  --sfm-primary:            #091426;
+  --sfm-primary-container:  #1e293b;
+  --sfm-on-primary:         #ffffff;
+  --sfm-on-primary-subtle:  #8590a6;
+
+  /* Secondary (cyan accent) */
+  --sfm-secondary:          #00687a;
+  --sfm-secondary-container:#57dffe;
+  --sfm-on-secondary:       #ffffff;
+
+  /* Tertiary / Accent Blue */
+  --sfm-tertiary-container: #00275b;
+  --sfm-on-tertiary-container: #4c8dff;
+
+  /* Semantic */
+  --sfm-error:              #ba1a1a;
+  --sfm-error-container:    #ffdad6;
+  --sfm-on-error-container: #93000a;
+  --sfm-success:            #1a7a3c;
+  --sfm-warning:            #e67e22;
+  --sfm-warning-bg:         #fef3cd;
+
+  /* Shadcn Override */
+  --background: var(--sfm-surface);
+  --foreground: var(--sfm-on-surface);
+  --card: #ffffff;
+  --card-foreground: var(--sfm-on-surface);
+  --popover: #ffffff;
+  --popover-foreground: var(--sfm-on-surface);
+  --primary: var(--sfm-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--sfm-surface-container);
+  --secondary-foreground: var(--sfm-on-surface);
+  --muted: var(--sfm-surface-low);
+  --muted-foreground: var(--sfm-on-surface-variant);
+  --accent: var(--sfm-secondary-container);
+  --accent-foreground: var(--sfm-secondary);
+  --destructive: var(--sfm-error);
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: var(--sfm-secondary-container);
+  --radius: 0.5rem;
+
+  /* Chart Colors */
+  --chart-1: #57dffe;
+  --chart-2: #4c8dff;
+  --chart-3: #00687a;
+  --chart-4: #e67e22;
+  --chart-5: #ba1a1a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+.sfm-sidebar {
+  background: var(--sfm-primary);
+  color: var(--sfm-on-primary);
+}
+
+.sfm-sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--sfm-on-primary-subtle);
+  transition: all 0.15s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.sfm-sidebar-nav-item:hover {
+  background: rgba(87, 223, 254, 0.08);
+  color: #ffffff;
+}
+
+.sfm-sidebar-nav-item.active {
+  background: var(--sfm-secondary-container);
+  color: var(--sfm-on-surface);
+  font-weight: 600;
+}
+
+.sfm-sidebar-nav-item.active svg {
+  color: var(--sfm-secondary);
+}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.sfm-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0px 2px 4px rgba(30, 41, 59, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.sfm-card:hover {
+  box-shadow: 0px 10px 15px rgba(30, 41, 59, 0.08);
+}
+
+/* ── Stat Cards ──────────────────────────────────────────── */
+.sfm-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0px 2px 4px rgba(30, 41, 59, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.sfm-stat-card:hover {
+  box-shadow: 0px 10px 15px rgba(30, 41, 59, 0.08);
+}
+
+.sfm-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sfm-data-value {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--sfm-on-surface);
+  line-height: 1.2;
+}
+
+.sfm-data-unit {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--sfm-on-surface-variant);
+  margin-left: 4px;
+}
+
+.sfm-label-caps {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sfm-on-surface-variant);
+}
+
+/* ── Status Chips ────────────────────────────────────────── */
+.chip-online {
+  background: rgba(87, 223, 254, 0.2);
+  color: #00687a;
+  border: none;
+  font-weight: 600;
+}
+
+.chip-offline {
+  background: rgba(117, 119, 125, 0.15);
+  color: #45474c;
+  border: none;
+  font-weight: 600;
+}
+
+.chip-warning {
+  background: rgba(230, 126, 34, 0.1);
+  color: var(--sfm-warning);
+  border: none;
+  font-weight: 600;
+}
+
+.chip-open {
+  background: rgba(26, 122, 60, 0.1);
+  color: var(--sfm-success);
+  font-weight: 600;
+}
+
+.chip-closed {
+  background: rgba(186, 26, 26, 0.1);
+  color: var(--sfm-error);
+  font-weight: 600;
+}
+
+/* ── Alert Cards ─────────────────────────────────────────── */
+.alert-card-error {
+  background: var(--sfm-error-container);
+  border: 1px solid rgba(186, 26, 26, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.alert-card-warning {
+  background: var(--sfm-warning-bg);
+  border: 1px solid rgba(230, 126, 34, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+/* ── Node Mini Cards ─────────────────────────────────────── */
+.sfm-node-card {
+  background: var(--sfm-surface-white);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(30, 41, 59, 0.05);
+}
+
+.sfm-node-card:hover,
+.sfm-node-card.hover {
+  background: var(--sfm-surface-container);
+  border-color: var(--sfm-secondary-container);
+  box-shadow: 0 10px 15px rgba(30, 41, 59, 0.1);
+  transform: translateY(-2px);
+}
+
+.sfm-node-card.selected {
+  background: var(--sfm-surface-container);
+  border-color: var(--sfm-secondary-container);
+  box-shadow: 0 0 0 2px rgba(87, 223, 254, 0.35), 0 10px 15px rgba(30, 41, 59, 0.1);
+}
+
+.sfm-ctx-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: left;
+  color: #0d1c2d;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.sfm-ctx-item:hover {
+  background: #eef4ff;
+}
+.sfm-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sfm-outline-variant);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sfm-outline);
+}

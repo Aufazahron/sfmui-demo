@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  super_admin
+  operator
+}
+
+enum NodeStatus {
+  online
+  offline
+  warning
+}
+
+enum ValveState {
+  open
+  closed
+}
+
+enum NodeMode {
+  manual
+  automatic
+}
+
+enum TelemetrySource {
+  minute
+  backlog
+}
+
+enum DeviceLogType {
+  online
+  offline
+  valve
+  limit
+  schedule
+  system
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  name          String
+  role          Role
+  createdAt     DateTime       @default(now()) @db.Timestamptz(3)
+  refreshTokens RefreshToken[]
+  systemLogs    SystemLog[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+}
+
+model Node {
+  id                 String      @id @default(uuid())
+  deviceId           String      @unique
+  name               String
+  location           String
+  parentId           String?
+  parent             Node?       @relation("NodeTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children           Node[]      @relation("NodeTree")
+  status             NodeStatus  @default(offline)
+  valveState         ValveState  @default(closed)
+  mode               NodeMode    @default(manual)
+  dailyLimit         Float       @default(0)
+  schedule           Json        @default("{\"active\":false,\"days\":[],\"openTime\":\"00:00\",\"closeTime\":\"00:00\"}")
+  lastSeenAt         DateTime?   @db.Timestamptz(3)
+  statusChangedAt    DateTime    @default(now()) @db.Timestamptz(3)
+  lastOdometer       Float       @default(0)
+  lastFlowrate       Float       @default(0)
+  lastTelemetrySeq   Int         @default(0)
+  configVersion      Int         @default(1)
+  configAckedVersion Int         @default(0)
+  createdAt          DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime    @updatedAt @db.Timestamptz(3)
+  telemetry          TelemetryReading[]
+  deviceLogs         DeviceLog[]
+}
+
+model TelemetryReading {
+  id          String           @id @default(uuid())
+  nodeId      String
+  node        Node             @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  recordedAt  DateTime         @db.Timestamptz(3)
+  flowrateAvg Float
+  odometer    Float
+  seq         Int
+  source      TelemetrySource
+  createdAt   DateTime         @default(now()) @db.Timestamptz(3)
+
+  @@unique([nodeId, recordedAt])
+  @@index([nodeId, recordedAt(sort: Desc)])
+}
+
+model DeviceLog {
+  id          String        @id @default(uuid())
+  nodeId      String
+  node        Node          @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  type        DeviceLogType
+  action      String
+  description String
+  createdAt   DateTime      @default(now()) @db.Timestamptz(3)
+
+  @@index([createdAt(sort: Desc)])
+}
+
+model SystemLog {
+  id          String   @id @default(uuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action      String
+  description String
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([createdAt(sort: Desc)])
+}

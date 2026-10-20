@@ -1,0 +1,18 @@
+-- Existing TIMESTAMP values were written as UTC wall-clock.
+-- Interpret them as UTC when promoting to timestamptz.
+
+ALTER TABLE "User" ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ(3) USING "createdAt" AT TIME ZONE 'UTC';
+
+ALTER TABLE "RefreshToken" ALTER COLUMN "expiresAt" TYPE TIMESTAMPTZ(3) USING "expiresAt" AT TIME ZONE 'UTC';
+ALTER TABLE "RefreshToken" ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ(3) USING "createdAt" AT TIME ZONE 'UTC';
+
+ALTER TABLE "Node" ALTER COLUMN "lastSeenAt" TYPE TIMESTAMPTZ(3) USING "lastSeenAt" AT TIME ZONE 'UTC';
+ALTER TABLE "Node" ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ(3) USING "createdAt" AT TIME ZONE 'UTC';
+ALTER TABLE "Node" ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ(3) USING "updatedAt" AT TIME ZONE 'UTC';
+
+ALTER TABLE "TelemetryReading" ALTER COLUMN "recordedAt" TYPE TIMESTAMPTZ(3) USING "recordedAt" AT TIME ZONE 'UTC';
+ALTER TABLE "TelemetryReading" ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ(3) USING "createdAt" AT TIME ZONE 'UTC';
+
+ALTER TABLE "DeviceLog" ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ(3) USING "createdAt" AT TIME ZONE 'UTC';
+
+ALTER TABLE "SystemLog" ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ(3) USING "createdAt" AT TIME ZONE 'UTC';
