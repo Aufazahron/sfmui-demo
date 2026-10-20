@@ -29,9 +29,9 @@ services:
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh-secret}
       MQTT_HOST: ${MQTT_HOST:-emqx.dtek.co.id}
       MQTT_PORT: ${MQTT_PORT:-1883}
-      MQTT_USERNAME: ${MQTT_USERNAME:-pertamina-sfm}
-      MQTT_PASSWORD: ${MQTT_PASSWORD:-}
-      MQTT_TOPIC_PREFIX: ${MQTT_TOPIC_PREFIX:-pertamina/sfm}
+      MQTT_USERNAME: ${MQTT_USERNAME:-sfm-demo}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:-sfm-demo}
+      MQTT_TOPIC_PREFIX: ${MQTT_TOPIC_PREFIX:-demo/sfm}
       MQTT_WSS_URL: ${MQTT_WSS_URL:-wss://mqtt.dtek.co.id}
     expose:
       - "3001"
