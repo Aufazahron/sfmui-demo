@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet, useLocation, matchPath } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import PoweredByFooter from './PoweredByFooter';
 
 const PAGE_TITLES: Record<string, string> = {
   '/dashboard': 'Dashboard',
@@ -33,6 +34,7 @@ export default function AppLayout() {
           style={{ padding: '24px', background: '#f8f9ff' }}
         >
           <Outlet />
+          <PoweredByFooter />
         </main>
       </div>
     </div>
