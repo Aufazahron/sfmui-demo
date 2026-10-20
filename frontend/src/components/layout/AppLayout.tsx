@@ -34,8 +34,9 @@ export default function AppLayout() {
           style={{ padding: '24px', background: '#f8f9ff' }}
         >
           <Outlet />
-          <PoweredByFooter />
         </main>
+
+        <PoweredByFooter />
       </div>
     </div>
   );
